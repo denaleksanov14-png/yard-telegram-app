@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выбор округа</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.8;
+        }
+        
+        .district-list {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .search-box {
+            margin-bottom: 15px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .district-item {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .district-item:last-child {
+            border-bottom: none;
+        }
+        
+        .district-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .district-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .district-region {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .selected {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .confirm-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .confirm-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .confirm-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Выбор округа</h1>
+            <p>Выберите ваш федеральный округ</p>
+        </div>
+        
+        <div class="district-list">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Поиск округа..." />
+            </div>
+            
+            <div id="districtsList">
+                <!-- Список округов будет загружен здесь -->
+            </div>
+        </div>
+        
+        <button class="confirm-btn" id="confirmBtn" disabled>
+            Подтвердить выбор
+        </button>
+    </div>
+
+    <script>
+        // Данные округов
+        const districts = [
+            { id: 1, name: "Центральный федеральный округ", region: "Москва" },
+            { id: 2, name: "Северо-Западный федеральный округ", region: "Санкт-Петербург" },
+            { id: 3, name: "Южный федеральный округ", region: "Ростов-на-Дону" },
+            { id: 4, name: "Северо-Кавказский федеральный округ", region: "Пятигорск" },
+            { id: 5, name: "Приволжский федеральный округ", region: "Нижний Новгород" },
+            { id: 6, name: "Уральский федеральный округ", region: "Екатеринбург" },
+            { id: 7, name: "Сибирский федеральный округ", region: "Новосибирск" },
+            { id: 8, name: "Дальневосточный федеральный округ", region: "Владивосток" }
+        ];
+
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
+        
+        let selectedDistrict = null;
+
+        // Инициализация приложения
+        function initApp() {
+            renderDistricts(districts);
+            setupEventListeners();
+        }
+
+        // Рендер списка округов
+        function renderDistricts(districtsToRender) {
+            const container = document.getElementById('districtsList');
+            
+            if (districtsToRender.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Округ не найден</div>';
+                return;
+            }
+            
+            container.innerHTML = districtsToRender.map(district => `
+                <div class="district-item" data-id="${district.id}">
+                    <div class="district-name">${district.name}</div>
+                    <div class="district-region">Центр: ${district.region}</div>
+                </div>
+            `).join('');
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Поиск
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = districts.filter(district => 
+                    district.name.toLowerCase().includes(searchTerm) ||
+                    district.region.toLowerCase().includes(searchTerm)
+                );
+                renderDistricts(filtered);
+                reattachItemListeners();
+            });
+
+            // Кнопка подтверждения
+            document.getElementById('confirmBtn').addEventListener('click', confirmSelection);
+            
+            reattachItemListeners();
+        }
+
+        // Перепривязка обработчиков для элементов списка
+        function reattachItemListeners() {
+            document.querySelectorAll('.district-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    selectDistrict(parseInt(this.dataset.id));
+                });
+            });
+        }
+
+        // Выбор округа
+        function selectDistrict(districtId) {
+            selectedDistrict = districts.find(d => d.id === districtId);
+            
+            // Снимаем выделение со всех элементов
+            document.querySelectorAll('.district-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Выделяем выбранный элемент
+            const selectedElement = document.querySelector(`[data-id="${districtId}"]`);
+            if (selectedElement) {
+                selectedElement.classList.add('selected');
+            }
+            
+            // Активируем кнопку подтверждения
+            document.getElementById('confirmBtn').disabled = false;
+            document.getElementById('confirmBtn').textContent = Выбрать: ${selectedDistrict.name};
+        }
+
+        // Подтверждение выбора
+        function confirmSelection() {
+            if (!selectedDistrict) return;
+            
+            // Отправляем данные в Telegram
+            tg.sendData(JSON.stringify({
+                action: 'district_selected',
+                district: selectedDistrict
+            }));
+            
+            // Закрываем приложение
+            tg.close();
+        }
+
+        // Запуск приложения
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
