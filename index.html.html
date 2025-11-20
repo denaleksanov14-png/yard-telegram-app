@@ -1,0 +1,103 @@
+{ id: 5, name: "Приволжский федеральный округ", region: "Нижний Новгород" },
+            { id: 6, name: "Уральский федеральный округ", region: "Екатеринбург" },
+            { id: 7, name: "Сибирский федеральный округ", region: "Новосибирск" },
+            { id: 8, name: "Дальневосточный федеральный округ", region: "Владивосток" }
+        ];
+
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
+        
+        let selectedDistrict = null;
+
+        // Инициализация приложения
+        function initApp() {
+            renderDistricts(districts);
+            setupEventListeners();
+        }
+
+        // Рендер списка округов
+        function renderDistricts(districtsToRender) {
+            const container = document.getElementById('districtsList');
+            
+            if (districtsToRender.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Округ не найден</div>';
+                return;
+            }
+            
+            container.innerHTML = districtsToRender.map(district => `
+                <div class="district-item" data-id="${district.id}">
+                    <div class="district-name">${district.name}</div>
+                    <div class="district-region">Центр: ${district.region}</div>
+                </div>
+            `).join('');
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Поиск
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = districts.filter(district => 
+                    district.name.toLowerCase().includes(searchTerm) ||
+                    district.region.toLowerCase().includes(searchTerm)
+                );
+                renderDistricts(filtered);
+                reattachItemListeners();
+            });
+
+            // Кнопка подтверждения
+            document.getElementById('confirmBtn').addEventListener('click', confirmSelection);
+            
+            reattachItemListeners();
+        }
+
+        // Перепривязка обработчиков для элементов списка
+        function reattachItemListeners() {
+            document.querySelectorAll('.district-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    selectDistrict(parseInt(this.dataset.id));
+                });
+            });
+        }
+
+        // Выбор округа
+        function selectDistrict(districtId) {
+            selectedDistrict = districts.find(d => d.id === districtId);
+            
+            // Снимаем выделение со всех элементов
+            document.querySelectorAll('.district-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Выделяем выбранный элемент
+            const selectedElement = document.querySelector(`[data-id="${districtId}"]`);
+            if (selectedElement) {
+                selectedElement.classList.add('selected');
+            }
+            
+            // Активируем кнопку подтверждения
+            document.getElementById('confirmBtn').disabled = false;
+            document.getElementById('confirmBtn').textContent = Выбрать: ${selectedDistrict.name};
+        }
+
+        // Подтверждение выбора
+        function confirmSelection() {
+            if (!selectedDistrict) return;
+            
+            // Отправляем данные в Telegram
+            tg.sendData(JSON.stringify({
+                action: 'district_selected',
+                district: selectedDistrict
+            }));
+            
+            // Закрываем приложение
+            tg.close();
+        }
+
+        // Запуск приложения
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
