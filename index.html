@@ -14,25 +14,20 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f5f5;
             min-height: 100vh;
-            padding: 0;
-            color: #333;
         }
         
         .container {
             max-width: 100%;
             margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
         }
         
         .header {
-            text-align: center;
-            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            background: rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
         }
         
         .header h1 {
@@ -45,100 +40,77 @@
             font-size: 14px;
         }
         
-        .breadcrumb {
+        .step-indicator {
             display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 14px;
-        }
-        
-        .breadcrumb span {
-            cursor: pointer;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-            padding: 5px 10px;
-            border-radius: 15px;
-        }
-        
-        .breadcrumb span:hover {
-            opacity: 1;
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .breadcrumb .separator {
-            margin: 0 8px;
-            opacity: 0.6;
-        }
-        
-        .breadcrumb .current {
-            opacity: 1;
-            font-weight: 600;
-            background: rgba(255,255,255,0.2);
-        }
-        
-        .content-container {
-            flex: 1;
             background: white;
-            border-radius: 25px 25px 0 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
         }
         
-        .search-container {
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #999;
+            position: relative;
+        }
+        
+        .step.active {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .step.active::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+        
+        .content {
+            background: white;
+            margin: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .search-box {
-            position: relative;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
         }
         
         .search-box input {
             width: 100%;
-            padding: 12px 40px 12px 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 12px;
-            font-size: 14px;
-            transition: all 0.3s;
-            background: white;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
         }
         
         .search-box input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
-        .search-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-        }
-        
-        /* Стили для списков */
-        .list-container {
-            flex: 1;
+        .list {
+            max-height: 400px;
             overflow-y: auto;
         }
         
-        .list-section {
-            margin-bottom: 5px;
-        }
-        
         .list-item {
-            padding: 16px 20px;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f5f5f5;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: white;
+            transition: background-color 0.2s;
         }
         
         .list-item:last-child {
@@ -155,108 +127,76 @@
         }
         
         .item-emoji {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             margin-right: 12px;
-            flex-shrink: 0;
-            font-size: 16px;
+            font-size: 18px;
         }
         
-        .area-item .item-emoji {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-        }
-        
-        .item-content {
+        .item-text {
             flex: 1;
         }
         
-        .item-title {
-            font-weight: 600;
-            color: #333;
+        .item-name {
+            font-weight: 500;
             margin-bottom: 2px;
-            font-size: 15px;
         }
         
-        .item-subtitle {
-            font-size: 13px;
+        .item-info {
+            font-size: 12px;
             color: #666;
         }
         
-        .selected-indicator {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #ddd;
-            border-radius: 50%;
-            margin-left: 10px;
-            flex-shrink: 0;
-            transition: all 0.3s;
-            position: relative;
+        .checkmark {
+            color: #2196f3;
+            font-size: 18px;
+            opacity: 0;
+            transition: opacity 0.2s;
         }
         
-        .selected .selected-indicator {
-            background: #2196f3;
-            border-color: #2196f3;
+        .selected .checkmark {
+            opacity: 1;
         }
         
-        .selected .selected-indicator::after {
-            content: '✓';
-            color: white;
-            font-size: 12px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        
-        .buttons-container {
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
+        .buttons {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
             display: flex;
             gap: 10px;
         }
         
         .btn {
             flex: 1;
-            padding: 14px;
+            padding: 12px;
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        .btn-next {
+            background: #667eea;
             color: white;
-            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
         }
         
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-        
-        .btn-primary:disabled {
+        .btn-next:disabled {
             background: #ccc;
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
         
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
+        .btn-back {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #e0e0e0;
         }
         
-        .btn-secondary:active {
-            transform: scale(0.98);
+        .step-content {
+            display: none;
+        }
+        
+        .step-content.active {
+            display: block;
         }
         
         .no-results {
@@ -265,564 +205,293 @@
             color: #666;
             font-size: 14px;
         }
-        
-        .step {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .step.active {
-            display: flex;
-        }
-        
-        /* Стили для скроллбара */
-        .list-container::-webkit-scrollbar {
-            width: 4px;
-        }
-        
-        .list-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        .list-container::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 2px;
-        }
-        
-        .list-container::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 id="mainTitle">🏙️ Выбор округа Москвы</h1>
-            <p id="mainSubtitle">Выберите административный округ</p>
+            <h1 id="title">Выбор округа Москвы</h1>
+            <p id="subtitle">Выберите административный округ</p>
         </div>
         
-        <div class="breadcrumb" id="breadcrumb">
-            <span class="current">Округ</span>
+        <div class="step-indicator">
+            <div class="step active" id="step1-indicator">1. Округ</div>
+            <div class="step" id="step2-indicator">2. Район</div>
         </div>
         
-        <div class="content-container">
-            <!-- Шаг 1: Выбор округа -->
-            <div class="step active" id="stepDistricts">
-                <div class="search-container">
-                    <div class="search-box">
-                        <input type="text" id="searchDistricts" placeholder="Поиск округа..." />
-                        <div class="search-icon">🔍</div>
-                    </div>
-                    </div>
-                
-                <div class="list-container" id="districtsListContainer">
-                    <div id="districtsList">
-                        <!-- Список округов будет загружен здесь -->
-                    </div>
+        <!-- Шаг 1: Выбор округа -->
+        <div class="step-content active" id="step1">
+            <div class="content">
+                <div class="search-box">
+                    <input type="text" id="searchDistrict" placeholder="Поиск округа...">
                 </div>
-                
-                <div class="buttons-container">
-                    <button class="btn btn-primary" id="nextBtn" disabled>
-                        Продолжить
-                    </button>
+                <div class="list" id="districtsList">
+                    <!-- Список округов -->
                 </div>
             </div>
-            
-            <!-- Шаг 2: Выбор района -->
-            <div class="step" id="stepAreas">
-                <div class="search-container">
-                    <div class="search-box">
-                        <input type="text" id="searchAreas" placeholder="Поиск района..." />
-                        <div class="search-icon">🔍</div>
-                    </div>
+            <div class="buttons">
+                <button class="btn btn-next" id="nextBtn" disabled>Далее</button>
+            </div>
+        </div>
+        
+        <!-- Шаг 2: Выбор района -->
+        <div class="step-content" id="step2">
+            <div class="content">
+                <div class="search-box">
+                    <input type="text" id="searchArea" placeholder="Поиск района...">
                 </div>
-                
-                <div class="list-container" id="areasListContainer">
-                    <div id="areasList">
-                        <!-- Список районов будет загружен здесь -->
-                    </div>
+                <div class="list" id="areasList">
+                    <!-- Список районов -->
                 </div>
-                
-                <div class="buttons-container">
-                    <button class="btn btn-secondary" id="backBtn">
-                        Назад
-                    </button>
-                    <button class="btn btn-primary" id="confirmBtn" disabled>
-                        Подтвердить
-                    </button>
-                </div>
+            </div>
+            <div class="buttons">
+                <button class="btn btn-back" id="backBtn">Назад</button>
+                <button class="btn btn-next" id="confirmBtn" disabled>Выбрать</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Полные данные административных округов Москвы с районами
+        // Данные округов и районов Москвы
         const moscowData = [
             { 
                 id: 1, 
-                name: "Центральный административный округ", 
+                name: "Центральный", 
                 emoji: "🏛️",
-                areas: [
-                    { id: 101, name: "Арбат" },
-                    { id: 102, name: "Басманный" },
-                    { id: 103, name: "Замоскворечье" },
-                    { id: 104, name: "Красносельский" },
-                    { id: 105, name: "Мещанский" },
-                    { id: 106, name: "Пресненский" },
-                    { id: 107, name: "Таганский" },
-                    { id: 108, name: "Тверской" },
-                    { id: 109, name: "Хамовники" },
-                    { id: 110, name: "Якиманка" }
-                ]
+                areas: ["Арбат", "Басманный", "Замоскворечье", "Красносельский", "Мещанский", "Пресненский", "Таганский", "Тверской", "Хамовники", "Якиманка"]
             },
             { 
                 id: 2, 
-                name: "Северный административный округ", 
+                name: "Северный", 
                 emoji: "🌲",
-                areas: [
-                    { id: 201, name: "Аэропорт" },
-                    { id: 202, name: "Беговой" },
-                    { id: 203, name: "Бескудниковский" },
-                    { id: 204, name: "Войковский" },
-                    { id: 205, name: "Восточное Дегунино" },
-                    { id: 206, name: "Головинский" },
-                    { id: 207, name: "Дмитровский" },
-                    { id: 208, name: "Западное Дегунино" },
-                    { id: 209, name: "Коптево" },
-                    { id: 210, name: "Левобережный" },
-                    { id: 211, name: "Молжаниновский" },
-                    { id: 212, name: "Савёловский" },
-                    { id: 213, name: "Сокол" },
-                    { id: 214, name: "Тимирязевский" },
-                    { id: 215, name: "Ховрино" },
-                    { id: 216, name: "Хорошёвский" }
-                ]
+                areas: ["Аэропорт", "Беговой", "Бескудниковский", "Войковский", "Восточное Дегунино", "Головинский", "Дмитровский", "Западное Дегунино", "Коптево", "Левобережный", "Молжаниновский", "Савёловский", "Сокол", "Тимирязевский", "Ховрино", "Хорошёвский"]
             },
             { 
                 id: 3, 
-                name: "Северо-Восточный административный округ", 
+                name: "Северо-Восточный", 
                 emoji: "🏘️",
-                areas: [
-                    { id: 301, name: "Алексеевский" },
-                    { id: 302, name: "Алтуфьевский" },
-                    { id: 303, name: "Бабушкинский" },
-                    { id: 304, name: "Бибирево" },
-                    { id: 305, name: "Бутырский" },
-                    { id: 306, name: "Лианозово" },
-                    { id: 307, name: "Лосиноостровский" },
-                    { id: 308, name: "Марфино" },
-                    { id: 309, name: "Марьина Роща" },
-                    { id: 310, name: "Останкинский" },
-                    { id: 311, name: "Отрадное" },
-                    { id: 312, name: "Ростокино" },
-                    { id: 313, name: "Свиблово" },
-                    { id: 314, name: "Северный" },
-                    { id: 315, name: "Северное Медведково" },
-                    { id: 316, name: "Южное Медведково" },
-                    { id: 317, name: "Ярославский" }
-                ]
+                areas: ["Алексеевский", "Алтуфьевский", "Бабушкинский", "Бибирево", "Бутырский", "Лианозово", "Лосиноостровский", "Марфино", "Марьина Роща", "Останкинский", "Отрадное", "Ростокино", "Свиблово", "Северный", "Северное Медведково", "Южное Медведково", "Ярославский"]
             },
             { 
                 id: 4, 
-                name: "Восточный административный округ", 
+                name: "Восточный", 
                 emoji: "🌅",
-                areas: [
-                    { id: 401, name: "Богородское" },
-                    { id: 402, name: "Вешняки" },
-                    { id: 403, name: "Восточное Измайлово" },
-                    { id: 404, name: "Восточный" },
-                    { id: 405, name: "Гольяново" },
-                    { id: 406, name: "Ивановское" },
-                    { id: 407, name: "Измайлово" },
-                    { id: 408, name: "Косино-Ухтомский" },
-                    { id: 409, name: "Метрогородок" },
-                    { id: 410, name: "Новогиреево" },
-                    { id: 411, name: "Новокосино" },
-                    { id: 412, name: "Перово" },
-                    { id: 413, name: "Преображенское" },
-                    { id: 414, name: "Северное Измайлово" },
-                    { id: 415, name: "Соколиная Гора" },
-                    { id: 416, name: "Сокольники" }
-                ]
+                areas: ["Богородское", "Вешняки", "Восточное Измайлово", "Восточный", "Гольяново", "Ивановское", "Измайлово", "Косино-Ухтомский", "Метрогородок", "Новогиреево", "Новокосино", "Перово", "Преображенское", "Северное Измайлово", "Соколиная Гора", "Сокольники"]
             },
             { 
                 id: 5, 
-                name: "Юго-Восточный административный округ", 
+                name: "Юго-Восточный", 
                 emoji: "🏭",
-                areas: [
-                    { id: 501, name: "Выхино-Жулебино" },
-                    { id: 502, name: "Капотня" },
-                    { id: 503, name: "Кузьминки" },
-                    { id: 504, name: "Лефортово" },
-                    { id: 505, name: "Люблино" },
-                    { id: 506, name: "Марьино" },
-                    { id: 507, name: "Некрасовка" },
-                    { id: 508, name: "Нижегородский" },
-                    { id: 509, name: "Печатники" },
-                    { id: 510, name: "Рязанский" },
-                    { id: 511, name: "Текстильщики" },
-                    { id: 512, name: "Южнопортовый" }
-                ]
+                areas: ["Выхино-Жулебино", "Капотня", "Кузьминки", "Лефортово", "Люблино", "Марьино", "Некрасовка", "Нижегородский", "Печатники", "Рязанский", "Текстильщики", "Южнопортовый"]
             },
             { 
                 id: 6, 
-                name: "Южный административный округ", 
+                name: "Южный", 
                 emoji: "🌇",
-                areas: [
-                    { id: 601, name: "Бирюлёво Восточное" },
-                    { id: 602, name: "Бирюлёво Западное" },
-                    { id: 603, name: "Братеево" },
-                    { id: 604, name: "Даниловский" },
-                    { id: 605, name: "Донской" },
-                    { id: 606, name: "Зябликово" },
-                    { id: 607, name: "Москворечье-Сабурово" },
-                    { id: 608, name: "Нагатино-Садовники" },
-                    { id: 609, name: "Нагатинский Затон" },
-                    { id: 610, name: "Нагорный" },
-                    { id: 611, name: "Орехово-Борисово Северное" },
-                    { id: 612, name: "Орехово-Борисово Южное" },
-                    { id: 613, name: "Царицыно" },
-                    { id: 614, name: "Чертаново Северное" },
-                    { id: 615, name: "Чертаново Центральное" },
-                    { id: 616, name: "Чертаново Южное" }
-                ]
+                areas: ["Бирюлёво Восточное", "Бирюлёво Западное", "Братеево", "Даниловский", "Донской", "Зябликово", "Москворечье-Сабурово", "Нагатино-Садовники", "Нагатинский Затон", "Нагорный", "Орехово-Борисово Северное", "Орехово-Борисово Южное", "Царицыно", "Чертаново Северное", "Чертаново Центральное", "Чертаново Южное"]
             },
             { 
                 id: 7, 
-                name: "Юго-Западный административный округ", 
+                name: "Юго-Западный", 
                 emoji: "🎓",
-                areas: [
-                    { id: 701, name: "Академический" },
-                    { id: 702, name: "Гагаринский" },
-                    { id: 703, name: "Зюзино" },
-                    { id: 704, name: "Коньково" },
-                    { id: 705, name: "Котловка" },
-                    { id: 706, name: "Ломоносовский" },
-                    { id: 707, name: "Обручевский" },
-                    { id: 708, name: "Северное Бутово" },
-                    { id: 709, name: "Тёплый Стан" },
-                    { id: 710, name: "Черёмушки" },
-                    { id: 711, name: "Южное Бутово" },
-                    { id: 712, name: "Ясенево" }
-                ]
+                areas: ["Академический", "Гагаринский", "Зюзино", "Коньково", "Котловка", "Ломоносовский", "Обручевский", "Северное Бутово", "Тёплый Стан", "Черёмушки", "Южное Бутово", "Ясенево"]
             },
             { 
                 id: 8, 
-                name: "Западный административный округ", 
+                name: "Западный", 
                 emoji: "💼",
-                areas: [
-                    { id: 801, name: "Внуково" },
-                    { id: 802, name: "Дорогомилово" },
-                    { id: 803, name: "Крылатское" },
-                    { id: 804, name: "Кунцево" },
-                    { id: 805, name: "Можайский" },
-                    { id: 806, name: "Ново-Переделкино" },
-                    { id: 807, name: "Очаково-Матвеевское" },
-                    { id: 808, name: "Проспект Вернадского" },
-                    { id: 809, name: "Раменки" },
-                    { id: 810, name: "Солнцево" },
-                    { id: 811, name: "Тропарёво-Никулино" },
-                    { id: 812, name: "Филёвский Парк" },
-                    { id: 813, name: "Фили-Давыдково" }
-                ]
+                areas: ["Внуково", "Дорогомилово", "Крылатское", "Кунцево", "Можайский", "Ново-Переделкино", "Очаково-Матвеевское", "Проспект Вернадского", "Раменки", "Солнцево", "Тропарёво-Никулино", "Филёвский Парк", "Фили-Давыдково"]
             },
             { 
                 id: 9, 
-                name: "Северо-Западный административный округ", 
+                name: "Северо-Западный", 
                 emoji: "🏞️",
-                areas: [
-                    { id: 901, name: "Куркино" },
-                    { id: 902, name: "Митино" },
-                    { id: 903, name: "Покровское-Стрешнево" },
-                    { id: 904, name: "Северное Тушино" },
-                    { id: 905, name: "Строгино" },
-                    { id: 906, name: "Хорошёво-Мнёвники" },
-                    { id: 907, name: "Щукино" },
-                    { id: 908, name: "Южное Тушино" }
-                ]
+                areas: ["Куркино", "Митино", "Покровское-Стрешнево", "Северное Тушино", "Строгино", "Хорошёво-Мнёвники", "Щукино", "Южное Тушино"]
             },
             { 
                 id: 10, 
-                name: "Зеленоградский административный округ", 
+                name: "Зеленоградский", 
                 emoji: "🌳",
-                areas: [
-                    { id: 1001, name: "Крюково" },
-                    { id: 1002, name: "Матушкино" },
-                    { id: 1003, name: "Савелки" },
-                    { id: 1004, name: "Силино" },
-                    { id: 1005, name: "Старое Крюково" }
-                ]
+                areas: ["Крюково", "Матушкино", "Савелки", "Силино", "Старое Крюково"]
             }
         ];
 
-        // Инициализация Telegram Web App
+        // Инициализация Telegram
         const tg = window.Telegram.WebApp;
         tg.expand();
-        tg.enableClosingConfirmation();
         
         // Состояние приложения
-        let currentStep = 'districts';
+        let currentStep = 1;
         let selectedDistrict = null;
         let selectedArea = null;
 
-        // Инициализация приложения
-        function initApp() {
-            renderDistricts(moscowData);
+        // Инициализация
+        function init() {
+            renderDistricts();
             setupEventListeners();
-            updateBreadcrumb();
         }
 
         // Рендер списка округов
-        function renderDistricts(districtsToRender) {
+        function renderDistricts(filter = '') {
             const container = document.getElementById('districtsList');
+            const filtered = moscowData.filter(district => 
+                district.name.toLowerCase().includes(filter.toLowerCase())
+            );
             
-            if (districtsToRender.length === 0) {
-                container.innerHTML = '<div class="no-results">Округ не найден</div>';
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="no-results">Округов не найдено</div>';
                 return;
             }
             
-            container.innerHTML = districtsToRender.map(district => `
-                <div class="list-item" data-id="${district.id}">
+            container.innerHTML = filtered.map(district => `
+                <div class="list-item ${selectedDistrict?.id === district.id ? 'selected' : ''}" data-id="${district.id}">
                     <div class="item-emoji">${district.emoji}</div>
-                    <div class="item-content">
-                        <div class="item-title">${district.name}</div>
-                        <div class="item-subtitle">${district.areas.length} районов</div>
+                    <div class="item-text">
+                        <div class="item-name">${district.name} административный округ</div>
+                        <div class="item-info">${district.areas.length} районов</div>
                     </div>
-                    <div class="selected-indicator"></div>
+                    <div class="checkmark">✓</div>
                 </div>
             `).join('');
             
-            reattachDistrictListeners();
+            // Перепривязываем обработчики
+            document.querySelectorAll('#districtsList .list-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const districtId = parseInt(item.dataset.id);
+                    selectDistrict(districtId);
+                });
+            });
         }
 
         // Рендер списка районов
-        function renderAreas(areasToRender) {
+        function renderAreas(filter = '') {
             const container = document.getElementById('areasList');
+            if (!selectedDistrict) return;
             
-            if (areasToRender.length === 0) {
-                container.innerHTML = '<div class="no-results">Район не найден</div>';
+            const filtered = selectedDistrict.areas.filter(area => 
+                area.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            if (filtered.length === 0) {
+                container.
+                    innerHTML = '<div class="no-results">Районов не найдено</div>';
                 return;
             }
             
-            container.innerHTML = areasToRender.map(area => `
-            <div class="list-item area-item" data-id="${area.id}">
+            container.innerHTML = filtered.map(area => `
+                <div class="list-item ${selectedArea === area ? 'selected' : ''}" data-area="${area}">
                     <div class="item-emoji">🏘️</div>
-                    <div class="item-content">
-                        <div class="item-title">${area.name}</div>
+                    <div class="item-text">
+                        <div class="item-name">${area}</div>
                     </div>
-                    <div class="selected-indicator"></div>
+                    <div class="checkmark">✓</div>
                 </div>
             `).join('');
             
-            reattachAreaListeners();
-        }
-
-        // Переключение шагов
-        function goToStep(step) {
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById(`step${step.charAt(0).toUpperCase() + step.slice(1)}`).classList.add('active');
-            currentStep = step;
-            updateBreadcrumb();
-            updateHeader();
-            updateButtons();
-        }
-
-        // Обновление хлебных крошек
-        function updateBreadcrumb() {
-            const breadcrumb = document.getElementById('breadcrumb');
-            
-            if (currentStep === 'districts') {
-                breadcrumb.innerHTML = '<span class="current">Округ</span>';
-            } else {
-                breadcrumb.innerHTML = `
-                    <span onclick="goToStep('districts')">Округ</span>
-                    <span class="separator">›</span>
-                    <span class="current">${selectedDistrict.name}</span>
-                `;
-            }
-        }
-
-        // Обновление заголовка
-        function updateHeader() {
-            const title = document.getElementById('mainTitle');
-            const subtitle = document.getElementById('mainSubtitle');
-            
-            if (currentStep === 'districts') {
-                title.textContent = '🏙️ Выбор округа Москвы';
-                subtitle.textContent = 'Выберите административный округ';
-            } else {
-                title.textContent = 🏘️ ${selectedDistrict.name};
-                subtitle.textContent = 'Выберите район';
-            }
-        }
-
-        // Обновление кнопок
-        function updateButtons() {
-            const nextBtn = document.getElementById('nextBtn');
-            const confirmBtn = document.getElementById('confirmBtn');
-            
-            if (currentStep === 'districts') {
-                nextBtn.disabled = !selectedDistrict;
-                nextBtn.textContent = selectedDistrict ? Выбрать: ${selectedDistrict.name} : 'Выберите округ';
-            } else {
-                confirmBtn.disabled = !selectedArea;
-                confirmBtn.textContent = selectedArea ? Подтвердить: ${selectedArea.name} : 'Выберите район';
-            }
+            // Перепривязываем обработчики
+            document.querySelectorAll('#areasList .list-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const areaName = item.dataset.area;
+                    selectArea(areaName);
+                });
+            });
         }
 
         // Выбор округа
         function selectDistrict(districtId) {
             selectedDistrict = moscowData.find(d => d.id === districtId);
-            
-            // Снимаем выделение со всех элементов
-            document.querySelectorAll('.list-item').forEach(item => {
-                item.classList.remove('selected');
-            });
-            
-            // Выделяем выбранный элемент
-            const selectedElement = document.querySelector(`.list-item[data-id="${districtId}"]`);
-            if (selectedElement) {
-                selectedElement.classList.add('selected');
-            }
-            
-            updateButtons();
+            renderDistricts(document.getElementById('searchDistrict').value);
+            updateNextButton();
         }
 
         // Выбор района
-        function selectArea(areaId) {
-            selectedArea = selectedDistrict.areas.find(a => a.id === areaId);
-            
-            // Снимаем выделение со всех элементов
-            document.querySelectorAll('.area-item').forEach(item => {
-                item.classList.remove('selected');
-            });
-            
-            // Выделяем выбранный элемент
-            const selectedElement = document.querySelector(`.area-item[data-id="${areaId}"]`);
-            if (selectedElement) {
-                selectedElement.classList.add('selected');
-            }
-            
-            updateButtons();
+        function selectArea(areaName) {
+            selectedArea = areaName;
+            renderAreas(document.getElementById('searchArea').value);
+            updateConfirmButton();
         }
 
         // Переход к следующему шагу
-        function goToNextStep() {
-            if (currentStep === 'districts' && selectedDistrict) {
-                renderAreas(selectedDistrict.areas);
-                goToStep('areas');
-                selectedArea = null;
-                updateButtons();
-                
-                // Сбрасываем поиск районов
-                document.getElementById('searchAreas').value = '';
+        function nextStep() {
+            if (currentStep === 1 && selectedDistrict) {
+                currentStep = 2;
+                updateUI();
+                renderAreas();
             }
         }
 
         // Возврат к предыдущему шагу
-        function goToPreviousStep() {
-            if (currentStep === 'areas') {
-                goToStep('districts');
-                
-                // Сбрасываем поиск округов
-                document.getElementById('searchDistricts').value = '';
-                renderDistricts(moscowData);
-                
-                // Восстанавливаем выбор округа
-                if (selectedDistrict) {
-                    const selectedElement = document.querySelector(`.list-item[data-id="${selectedDistrict.id}"]`);
-                    if (selectedElement) {
-                        selectedElement.classList.add('selected');
-                    }
-                }
+        function prevStep() {
+            if (currentStep === 2) {
+                currentStep = 1;
+                updateUI();
             }
+        }
+
+        // Обновление интерфейса
+        function updateUI() {
+            // Обновляем индикаторы шагов
+            document.getElementById('step1-indicator').classList.toggle('active', currentStep === 1);
+            document.getElementById('step2-indicator').classList.toggle('active', currentStep === 2);
+            
+            // Обновляем контент шагов
+            document.getElementById('step1').classList.toggle('active', currentStep === 1);
+            document.getElementById('step2').classList.toggle('active', currentStep === 2);
+            
+            // Обновляем заголовки
+            if (currentStep === 1) {
+                document.getElementById('title').textContent = 'Выбор округа Москвы';
+                document.getElementById('subtitle').textContent = 'Выберите административный округ';
+            } else {
+                document.getElementById('title').textContent = selectedDistrict.name + ' округ';
+                document.getElementById('subtitle').textContent = 'Выберите район';
+            }
+        }
+
+        // Обновление кнопки "Далее"
+        function updateNextButton() {
+            document.getElementById('nextBtn').disabled = !selectedDistrict;
+        }
+
+        // Обновление кнопки "Выбрать"
+        function updateConfirmButton() {
+            document.getElementById('confirmBtn').disabled = !selectedArea;
         }
 
         // Подтверждение выбора
         function confirmSelection() {
             if (selectedDistrict && selectedArea) {
-                // Отправка данных в Telegram
+                // Отправляем данные в Telegram
                 tg.sendData(JSON.stringify({
-                    action: 'moscow_location_selected',
-                    district: {
-                        id: selectedDistrict.id,
-                        name: selectedDistrict.name,
-                        emoji: selectedDistrict.emoji
-                    },
-                    area: {
-                        id: selectedArea.id,
-                        name: selectedArea.name
-                    }
+                    district: selectedDistrict.name,
+                    area: selectedArea,
+                    district_emoji: selectedDistrict.emoji
                 }));
                 
-                tg.showConfirm(`✅ Выбор сохранен!\n${selectedDistrict.emoji} ${selectedDistrict.name}\n🏘️ ${selectedArea.name}`, (confirmed) => {
-                    tg.close();
-                });
+                tg.close();
             }
         }
 
-        // Обработчики событий
-        function reattachDistrictListeners() {
-            document.querySelectorAll('.list-item[data-id]').forEach(item => {
-                item.addEventListener('click', function() {
-                    selectDistrict(parseInt(this.dataset.id));
-                });
-            });
-        }
-
-        function reattachAreaListeners() {
-            document.querySelectorAll('.area-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    selectArea(parseInt(this.dataset.id));
-                });
-            });
-        }
-
+        // Настройка обработчиков событий
         function setupEventListeners() {
             // Поиск округов
-            document.getElementById('searchDistricts').addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase();
-                const filtered = moscowData.filter(district => 
-                    district.name.toLowerCase().includes(searchTerm)
-                );
-                renderDistricts(filtered);
-                
-                // Восстанавливаем выбор если он есть в отфильтрованном списке
-                if (selectedDistrict && filtered.find(d => d.id === selectedDistrict.id)) {
-                    const selectedElement = document.querySelector(`.list-item[data-id="${selectedDistrict.id}"]`);
-                    if (selectedElement) {
-                        selectedElement.classList.add('selected');
-                    }
-                }
+            document.getElementById('searchDistrict').addEventListener('input', (e) => {
+                renderDistricts(e.target.value);
             });
-
+            
             // Поиск районов
-            document.getElementById('searchAreas').addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase();
-                const filtered = selectedDistrict.areas.filter(area => 
-                    area.name.toLowerCase().includes(searchTerm)
-                );
-                renderAreas(filtered);
-                
-                // Восстанавливаем выбор если он есть в отфильтрованном списке
-                if (selectedArea && filtered.find(a => a.id === selectedArea.id)) {
-                    const selectedElement = document.querySelector(`.area-item[data-id="${selectedArea.
-                                                                                          id}"]`);
-                    if (selectedElement) {
-                        selectedElement.classList.add('selected');
-                    }
-                }
-            });
-
+            document.getElementById('searchArea').addEventListener('input', (e) => {
+                renderAreas(e.target.value);
+                });
+            
             // Кнопки
-            document.getElementById('nextBtn').addEventListener('click', goToNextStep);
-            document.getElementById('backBtn').addEventListener('click', goToPreviousStep);
+            document.getElementById('nextBtn').addEventListener('click', nextStep);
+            document.getElementById('backBtn').addEventListener('click', prevStep);
             document.getElementById('confirmBtn').addEventListener('click', confirmSelection);
         }
 
         // Запуск приложения
-        document.addEventListener('DOMContentLoaded', initApp);
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
