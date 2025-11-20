@@ -1,3 +1,0 @@
-[
-  "\/\/ Пример для Node.js с telegraf\r\nconst { Telegraf } = require('telegraf');\r\n\r\nconst bot = new Telegraf('YOUR_BOT_TOKEN');\r\n\r\nbot.command('start', (ctx) => {\r\n    ctx.reply('Выберите ваш округ:', {\r\n        reply_markup: {\r\n            inline_keyboard: [[\r\n                {\r\n                    text: '🎯 Выбрать округ',\r\n                    web_app: { url: 'https:\/\/ваш-username.github.io\/ваш-репозиторий' }\r\n                }\r\n            ]]\r\n        }\r\n    });\r\n});\r\n\r\nbot.launch();": null
-]
