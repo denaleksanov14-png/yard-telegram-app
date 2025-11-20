@@ -1,4 +1,3 @@
-// Пример для Node.js с telegraf
 const { Telegraf } = require('telegraf');
 
 const bot = new Telegraf('8115010175:AAFayt16TXjElgrE8vGMnaDhKQKeZGSsqC4');
